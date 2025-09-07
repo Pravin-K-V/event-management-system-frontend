@@ -1,9 +1,18 @@
+import { useState } from "react";
+import Input from "./components/ui/Input";
+
 const App = () => {
+  const [email, setEmail] = useState("");
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <h1 className="text-3xl font-bold text-text-primary">
-        Event Management System
-      </h1>
+    <div className="p-10 max-w-md">
+      <Input
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+        type="email"
+        disabled
+      />
     </div>
   );
 };
