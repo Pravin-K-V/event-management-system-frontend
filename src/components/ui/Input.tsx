@@ -1,51 +1,40 @@
-import React from "react";
+// src/components/ui/Input.tsx
+import type { ChangeEvent } from "react";
 
-type InputProps = React.PropsWithChildren<{
+interface InputProps {
+  label?: string;
+  name?: string;
+  type?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  type?: "text" | "email" | "password" | "number";
   disabled?: boolean;
   error?: string;
-  size?: "sm" | "md" | "lg";
-}>;
+}
 
-const SIZE_CLASSES = {
-  sm: "px-2 py-1 text-sm",
-  md: "px-3 py-2 text-base",
-  lg: "px-4 py-3 text-lg",
-};
-
-const BASE_CLASSES =
-  "border rounded w-full focus:outline-none focus:ring-2 focus:ring-offset-1";
-const ERROR_CLASSES = "border-error focus:ring-error";
-
-const Input: React.FC<InputProps> = ({
+export default function Input({
+  label,
+  name,
+  type = "text",
   value,
   onChange,
   placeholder,
-  type = "text",
-  disabled = false,
+  disabled,
   error,
-  size = "md",
-}) => {
-  const finalClassName = `${BASE_CLASSES} ${SIZE_CLASSES[size]} ${
-    error ? ERROR_CLASSES : "border-gray-300 focus:ring-primary"
-  }`;
-
+}: InputProps) {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col">
+      {label && <label className="mb-1 text-sm font-medium">{label}</label>}
       <input
+        name={name}
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
         disabled={disabled}
-        className={finalClassName}
+        className="border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      {error && <span className="text-error text-sm mt-1">{error}</span>}
+      {error && <span className="text-red-600 text-sm mt-1">{error}</span>}
     </div>
   );
-};
-
-export default Input;
+}

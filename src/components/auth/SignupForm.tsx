@@ -2,8 +2,13 @@ import { useState } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 
-export default function LoginForm() {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+export default function SignupForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -11,11 +16,17 @@ export default function LoginForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login data:", formData);
+    console.log("Signup data:", formData);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <Input
+        label="Name"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+      />
       <Input
         label="Email"
         name="email"
@@ -30,8 +41,15 @@ export default function LoginForm() {
         value={formData.password}
         onChange={handleChange}
       />
+      <Input
+        label="Confirm Password"
+        name="confirmPassword"
+        type="password"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+      />
       <Button type="submit" className="w-full">
-        Login
+        Sign Up
       </Button>
     </form>
   );
