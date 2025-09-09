@@ -15,13 +15,19 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Linting */
+    /* Strict TypeScript checks */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* ✅ Added for path alias */
+    "baseUrl": "." /* base folder for relative paths */,
+    "paths": {
+      "@/*": ["src/*"] /* '@' now points to 'src' folder */
+    }
   },
   "include": ["src"]
 }
