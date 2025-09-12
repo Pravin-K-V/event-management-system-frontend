@@ -1,17 +1,27 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Playground from "@/pages/Playground";
 import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
 
+const router = createBrowserRouter([
+  {
+    path: "/playground",
+    element: <Playground />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+  {
+    path: "*",
+    element: <div>Page not found</div>,
+  },
+]);
+
 export default function AppRouter() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/playground" element={<Playground />} />
-        <Route path="*" element={<div>Page not found</div>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }

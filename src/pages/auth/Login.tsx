@@ -28,6 +28,7 @@ export default function Login() {
           <Link
             to="/signup"
             className="text-primary hover:text-primary-hover font-medium"
+            viewTransition
           >
             Sign up
           </Link>

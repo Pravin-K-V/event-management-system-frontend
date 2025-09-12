@@ -37,6 +37,7 @@ export default function Signup() {
           <Link
             to="/login"
             className="text-primary hover:text-primary-hover font-medium"
+            viewTransition
           >
             Login
           </Link>
