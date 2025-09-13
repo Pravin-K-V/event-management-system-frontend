@@ -55,7 +55,7 @@ export function EventCard({
         <div className="mt-2 text-text-secondary text-sm flex flex-col sm:flex-row sm:justify-between gap-1">
           <span className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
-            {new Date(event.date).toLocaleDateString()}
+            {new Date(event.date).toLocaleDateString("en-GB")}
           </span>
         </div>
         <div className="mt-3 flex items-center justify-between flex-wrap gap-2">

@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/userAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
 import AdminDashboard from "./AdminDashboard";
 import OrganizerDashboard from "./OrganizerDashboard";

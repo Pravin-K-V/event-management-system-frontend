@@ -1,16 +1,21 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import Playground from "@/pages/Playground";
 import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
 import GuestHome from "@/pages/Home/GuestHome";
-import Dashboard from "@/pages/Dashboard";
-import { useAuth } from "@/hooks/userAuth";
+import { useAuth } from "@/hooks/useAuth";
+import EventListingPage from "@/pages/events/EventListingPage";
 
 function RootRouter() {
   const { user } = useAuth();
 
   if (!user) return <GuestHome />;
-  return <Dashboard />;
+
+  return <Navigate to="/dashboard" replace />;
 }
 
 const router = createBrowserRouter([
@@ -20,7 +25,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: <EventListingPage />,
   },
   {
     path: "/playground",
