@@ -25,7 +25,7 @@ export default function Select({
   placeholder,
 }: SelectProps) {
   const classes = clsx(
-    "w-full px-3 py-2 border rounded-lg bg-[var(--color-card)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]",
+    "w-full px-3 py-2 pr-8 border rounded-lg bg-[var(--color-card)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]",
     "appearance-none",
     error &&
       "border-[var(--color-error)] focus:ring-[var(--color-error)] focus:border-transparent",
