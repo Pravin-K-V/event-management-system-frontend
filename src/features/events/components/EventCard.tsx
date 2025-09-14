@@ -5,7 +5,7 @@ import { Calendar, CheckCircle, Clock, Info, MapPin } from "lucide-react";
 
 interface EventCardProps {
   event: Event;
-  role: "admin" | "organizer" | "participant";
+  role: "admin" | "organizer" | "participant" | undefined;
   onView: (id: string) => void;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
@@ -90,8 +90,8 @@ export function EventCard({
             </Button>
           )}
 
-          {(role === "organizer" || role === "admin") && (
-            <>
+          {(role === "organizer" || role === "admin") &&
+            event.status === "upcoming" && (
               <Button
                 size="md"
                 variant="primary"
@@ -99,15 +99,16 @@ export function EventCard({
               >
                 Edit
               </Button>
+            )}
 
-              <Button
-                size="md"
-                variant="danger"
-                onClick={() => onDelete?.(event.id)}
-              >
-                Delete
-              </Button>
-            </>
+          {(role === "organizer" || role === "admin") && (
+            <Button
+              size="md"
+              variant="danger"
+              onClick={() => onDelete?.(event.id)}
+            >
+              Delete
+            </Button>
           )}
         </div>
       </div>

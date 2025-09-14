@@ -1,5 +1,7 @@
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
+import type { userRole } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import Modal from "@/layouts/Modal";
 import type { Event } from "@/types/event";
 
@@ -18,13 +20,9 @@ export default function EventDetailsModal({
   onDelete,
   event,
 }: EventDetailsModalProps) {
-  if (!event) return null;
+  const { user } = useAuth();
 
-  // for testing, in real we need to get from useAuth
-  const user = {
-    email: "test",
-    role: "participant",
-  };
+  if (!event) return null;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={event.title} size="lg">
@@ -76,16 +74,17 @@ export default function EventDetailsModal({
               Register
             </Button>
           )}
-          {(user?.role === "organizer" || user?.role === "admin") && (
-            <>
-              <Button size="md" variant="secondary" onClick={onEdit}>
+          {(user?.role === "organizer" || user?.role === "admin") &&
+            event.status === "upcoming" && (
+              <Button size="md" variant="primary" onClick={onEdit}>
                 Edit
               </Button>
+            )}
 
-              <Button size="md" variant="danger" onClick={onDelete}>
-                Delete
-              </Button>
-            </>
+          {(user?.role === "organizer" || user?.role === "admin") && (
+            <Button size="md" variant="danger" onClick={onDelete}>
+              Delete
+            </Button>
           )}
         </div>
       </div>

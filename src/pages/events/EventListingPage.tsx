@@ -9,6 +9,8 @@ import type { Event } from "@/types/event";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import type { userRole } from "@/context/AuthContext";
 
 const dummyEvents: Event[] = [
   {
@@ -62,9 +64,10 @@ export default function EventListingPage() {
   const [deleteEvent, setDeleteEvent] = useState<Event | null>(null);
 
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const categories = ["Tech", "Entertainment", "Art"];
-  const role: "admin" | "organizer" | "participant" = "participant";
+  const role: userRole | undefined = user?.role;
 
   useEffect(() => {
     let temp = [...events];
@@ -151,7 +154,7 @@ export default function EventListingPage() {
             <EventCard
               key={event.id}
               event={event}
-              role={role}
+              role={user?.role}
               onView={handleView}
               onEdit={handleEdit}
               onDelete={handleDelete}

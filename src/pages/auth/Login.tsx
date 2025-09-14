@@ -2,8 +2,29 @@ import AuthLayout from "@/layouts/AuthLayout";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      await login(email, password);
+      navigate("/");
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
   return (
     <AuthLayout>
       <div>
@@ -11,14 +32,25 @@ export default function Login() {
           Login
         </h2>
 
-        <form className="flex flex-col gap-4">
-          <Input type="email" placeholder="Email" name="email" required />
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="Email"
+            name="email"
+            required
+          />
+          <Input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
             name="password"
             required
           />
+          
+          {error && <p className="text-error">{error}</p>}
           <Button type="submit" className="w-full">
             Login
           </Button>
