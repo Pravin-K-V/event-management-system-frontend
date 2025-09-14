@@ -1,9 +1,12 @@
+import Button from "@/components/ui/Button";
 import { EventCard } from "@/features/events/components/EventCard";
 import FilterBar from "@/features/events/components/FilterBar";
 import SearchBar from "@/features/events/components/SearchBar";
 import SortDropDown from "@/features/events/components/SortDropDown";
 import type { Event } from "@/types/event";
+import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const dummyEvents: Event[] = [
   {
@@ -43,6 +46,8 @@ export default function EventListingPage() {
   const [status, setStatus] = useState("all");
   const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("date");
+
+  const navigate = useNavigate();
 
   const categories = ["Tech", "Entertainment", "Art"];
   const role: "admin" | "organizer" | "participant" = "participant";
@@ -97,6 +102,16 @@ export default function EventListingPage() {
             categories={categories}
           />
           <SortDropDown value={sort} onChange={setSort} />
+          {role !== "participant" && (
+            <Button
+              variant="primary"
+              size="md"
+              className="ml-8 border"
+              onClick={() => navigate("/events/create")}
+            >
+              <Plus className="w-5 h-5 mr-2" /> Create New Event
+            </Button>
+          )}
         </div>
       </div>
       {filteredEvents.length === 0 ? (

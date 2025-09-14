@@ -23,7 +23,7 @@ export default function Card({
   return (
     <div className={classes}>
       {header && (
-        <div className="mb-2 font-semibold text-center text-lg text-text-primary">
+        <div className="mb-2 font-semibold text-center text-xl text-text-primary">
           {header}
         </div>
       )}
