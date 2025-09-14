@@ -4,6 +4,7 @@ import FilterBar from "@/features/events/components/FilterBar";
 import SearchBar from "@/features/events/components/SearchBar";
 import SortDropDown from "@/features/events/components/SortDropDown";
 import EventDetailsModal from "@/features/events/pages/EventDetailsModal";
+import Modal from "@/layouts/Modal";
 import type { Event } from "@/types/event";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -19,8 +20,7 @@ const dummyEvents: Event[] = [
     category: "Tech",
     location: "Online",
     status: "upcoming",
-    bannerUrl:
-      "",
+    bannerUrl: "",
   },
   {
     id: "2",
@@ -59,11 +59,12 @@ export default function EventListingPage() {
   const [sort, setSort] = useState("date");
 
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [deleteEvent, setDeleteEvent] = useState<Event | null>(null);
 
   const navigate = useNavigate();
 
   const categories = ["Tech", "Entertainment", "Art"];
-  const role: "admin" | "organizer" | "participant" = "participant";
+  const role: "admin" | "organizer" | "participant" = "admin";
 
   useEffect(() => {
     let temp = [...events];
@@ -97,12 +98,22 @@ export default function EventListingPage() {
     setFilteredEvents(temp);
   }, [search, status, category, sort, events]);
 
+  const confirmDelete = (id: string) => {
+    setEvents((prev) => prev.filter((e) => e.id !== id));
+    setDeleteEvent(null);
+  };
+
   const handleView = (id: string) => {
     const event = events.find((e) => e.id === id) || null;
     setSelectedEvent(event);
   };
+
+  const handleDelete = (id: string) => {
+    const event = events.find((e) => e.id === id) || null;
+    setDeleteEvent(event);
+  };
+
   const handleEdit = (id: string) => navigate(`/events/${id}/edit`);
-  const handleDelete = (id: string) => alert(`Delete event id: ${id}`);
   const handleRegister = (id: string) => alert(`Register event id: ${id}`);
 
   return (
@@ -155,6 +166,29 @@ export default function EventListingPage() {
         event={selectedEvent}
         onClose={() => setSelectedEvent(null)}
       />
+
+      {deleteEvent && (
+        <Modal
+          isOpen={!!deleteEvent}
+          title="Delete Event"
+          onClose={() => setDeleteEvent(null)}
+        >
+          <p className="text-text-secondary mb-4">
+            Are you sure want to delete <strong>{deleteEvent.title}</strong>?
+          </p>
+          <div className="flex justify-end gap-3">
+            <Button variant="secondary" onClick={() => setDeleteEvent(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => confirmDelete(deleteEvent.id)}
+            >
+              Delete
+            </Button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
