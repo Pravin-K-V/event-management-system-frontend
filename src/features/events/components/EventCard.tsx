@@ -1,7 +1,7 @@
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import type { Event } from "@/types/event";
-import { Calendar, CheckCircle, Clock, Info } from "lucide-react";
+import { Calendar, CheckCircle, Clock, Info, MapPin } from "lucide-react";
 
 interface EventCardProps {
   event: Event;
@@ -56,6 +56,10 @@ export function EventCard({
           <span className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
             {new Date(event.date).toLocaleDateString("en-GB")}
+          </span>
+          <span className="flex items-center gap-1">
+            <MapPin className="w-4 h-4" />
+            {event.location}
           </span>
         </div>
         <div className="mt-3 flex items-center justify-between flex-wrap gap-2">
