@@ -19,6 +19,8 @@ export interface EventFormData {
 
 interface EventFormProps {
   onSubmit: (data: EventFormData) => void;
+  initialData?: EventFormData;
+  isEditing?: boolean;
 }
 
 const categories = [
@@ -27,14 +29,22 @@ const categories = [
   { value: "meetup", label: "Meetup" },
 ];
 
-export default function EventForm({ onSubmit }: EventFormProps) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
-  const [location, setLocation] = useState("");
-  const [category, setCategory] = useState("");
-  const [capacity, setCapacity] = useState<number>(0);
-  const [banner, setBanner] = useState<File | null>(null);
+export default function EventForm({
+  onSubmit,
+  initialData,
+  isEditing,
+}: EventFormProps) {
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [description, setDescription] = useState(
+    initialData?.description || "",
+  );
+  const [date, setDate] = useState(initialData?.date || "");
+  const [location, setLocation] = useState(initialData?.location || "");
+  const [category, setCategory] = useState(initialData?.category || "");
+  const [capacity, setCapacity] = useState<number>(initialData?.capacity || 0);
+  const [banner, setBanner] = useState<File | null>(
+    initialData?.banner || null,
+  );
 
   const [errors, setErrors] = useState<
     Partial<Record<keyof EventFormData, string>>
@@ -64,18 +74,20 @@ export default function EventForm({ onSubmit }: EventFormProps) {
         banner,
       });
 
-      setTitle("");
-      setDescription("");
-      setDate("");
-      setLocation("");
-      setCategory("");
-      setCapacity(0);
-      setBanner(null);
+      if (!isEditing) {
+        setTitle("");
+        setDescription("");
+        setDate("");
+        setLocation("");
+        setCategory("");
+        setCapacity(0);
+        setBanner(null);
+      }
     }
   };
 
   return (
-    <Card header="Create Event">
+    <Card header={isEditing ? "Edit Event" : "Create Event"}>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
           <label className="block text-sm font-medium text-text-primary">
@@ -159,7 +171,7 @@ export default function EventForm({ onSubmit }: EventFormProps) {
 
         <div className="flex justify-center">
           <Button variant="primary" type="submit">
-            Create Event
+            {isEditing ? "Update Event" : "Create Event"}
           </Button>
         </div>
       </form>

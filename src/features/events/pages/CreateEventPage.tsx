@@ -7,7 +7,7 @@ export default function CreateEventPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto my-10">
       <EventForm onSubmit={handleCreateEvent} />
     </div>
   );

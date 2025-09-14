@@ -3,6 +3,7 @@ import { EventCard } from "@/features/events/components/EventCard";
 import FilterBar from "@/features/events/components/FilterBar";
 import SearchBar from "@/features/events/components/SearchBar";
 import SortDropDown from "@/features/events/components/SortDropDown";
+import EventDetailsModal from "@/features/events/pages/EventDetailsModal";
 import type { Event } from "@/types/event";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -12,26 +13,36 @@ const dummyEvents: Event[] = [
   {
     id: "1",
     title: "React Conference 2025",
+    description:
+      "Join industry leaders, developers, and tech enthusiasts for an immersive day of talks, workshops, and networking opportunities. Discover the latest trends in web development, React ecosystem updates, and best practices for building modern applications.",
     date: "2025-10-20T10:00:00Z",
     category: "Tech",
+    location: "Online",
     status: "upcoming",
     bannerUrl:
-      "https://cdn.pixabay.com/photo/2018/04/20/21/10/code-3337044_1280.jpg",
+      "",
   },
   {
     id: "2",
     title: "Music Festival",
+    description:
+      "Experience an unforgettable night of live performances featuring top artists, vibrant stage setups, and a celebration of music across genres. Enjoy food, culture, and the energy of a festival atmosphere.",
     date: "2025-08-15T18:00:00Z",
     category: "Entertainment",
+    location: "Bangalore",
     status: "ongoing",
+
     bannerUrl:
       "https://cdn.pixabay.com/photo/2020/06/29/19/26/piano-5353974_1280.jpg",
   },
   {
     id: "3",
     title: "Art Expo",
+    description:
+      "Explore breathtaking collections from renowned and emerging artists. The expo showcases paintings, sculptures, digital art, and installations, offering visitors a deep dive into the evolving world of creativity and expression.",
     date: "2025-05-10T09:00:00Z",
     category: "Art",
+    location: "Chennai",
     status: "past",
     bannerUrl:
       "https://cdn.pixabay.com/photo/2012/03/02/00/35/shanghai-20769_1280.jpg",
@@ -46,6 +57,8 @@ export default function EventListingPage() {
   const [status, setStatus] = useState("all");
   const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("date");
+
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   const navigate = useNavigate();
 
@@ -84,8 +97,11 @@ export default function EventListingPage() {
     setFilteredEvents(temp);
   }, [search, status, category, sort, events]);
 
-  const handleView = (id: string) => alert(`View event id: ${id}`);
-  const handleEdit = (id: string) => alert(`Edit event id: ${id}`);
+  const handleView = (id: string) => {
+    const event = events.find((e) => e.id === id) || null;
+    setSelectedEvent(event);
+  };
+  const handleEdit = (id: string) => navigate(`/events/${id}/edit`);
   const handleDelete = (id: string) => alert(`Delete event id: ${id}`);
   const handleRegister = (id: string) => alert(`Register event id: ${id}`);
 
@@ -133,6 +149,12 @@ export default function EventListingPage() {
           ))}
         </div>
       )}
+
+      <EventDetailsModal
+        isOpen={!!selectedEvent}
+        event={selectedEvent}
+        onClose={() => setSelectedEvent(null)}
+      />
     </div>
   );
 }

@@ -10,6 +10,7 @@ import GuestHome from "@/pages/Home/GuestHome";
 import { useAuth } from "@/hooks/useAuth";
 import EventListingPage from "@/pages/events/EventListingPage";
 import CreateEventPage from "@/features/events/pages/CreateEventPage";
+import EditEventPage from "@/features/events/pages/EditEventPage";
 
 function RootRouter() {
   const { user } = useAuth();
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: "/events/create",
     element: <CreateEventPage />,
+  },
+  {
+    path: "/events/:id/edit",
+    element: <EditEventPage />,
   },
   {
     path: "/playground",

@@ -30,12 +30,12 @@ export default function Modal({
   const sizeClasses = {
     sm: "max-w-sm",
     md: "max-w-lg",
-    lg: "max-w-2xl",
+    lg: "max-w-3xl",
   };
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black/50 flex backdrop-blur-sm items-center justify-center z-50"
       onClick={onClose}
     >
       <div
