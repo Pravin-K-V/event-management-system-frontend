@@ -64,7 +64,7 @@ export default function EventListingPage() {
   const navigate = useNavigate();
 
   const categories = ["Tech", "Entertainment", "Art"];
-  const role: "admin" | "organizer" | "participant" = "admin";
+  const role: "admin" | "organizer" | "participant" = "participant";
 
   useEffect(() => {
     let temp = [...events];
@@ -165,6 +165,8 @@ export default function EventListingPage() {
         isOpen={!!selectedEvent}
         event={selectedEvent}
         onClose={() => setSelectedEvent(null)}
+        onEdit={() => selectedEvent && handleEdit(selectedEvent.id)}
+        onDelete={() => selectedEvent && handleDelete(selectedEvent.id)}
       />
 
       {deleteEvent && (

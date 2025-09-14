@@ -74,7 +74,7 @@ export function EventCard({
         <div className="mt-4 flex gap-2 flex-wrap">
           <Button
             size="md"
-            variant="primary"
+            variant="secondary"
             onClick={() => onView?.(event.id)}
           >
             View Details
@@ -83,7 +83,7 @@ export function EventCard({
           {role === "participant" && event.status === "upcoming" && (
             <Button
               size="md"
-              variant="secondary"
+              variant="primary"
               onClick={() => onRegister?.(event.id)}
             >
               Register
@@ -94,7 +94,7 @@ export function EventCard({
             <>
               <Button
                 size="md"
-                variant="secondary"
+                variant="primary"
                 onClick={() => onEdit?.(event.id)}
               >
                 Edit
