@@ -6,15 +6,25 @@ import type { Event } from "@/types/event";
 interface EventDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
   event: Event | null;
 }
 
 export default function EventDetailsModal({
   isOpen,
   onClose,
+  onEdit,
+  onDelete,
   event,
 }: EventDetailsModalProps) {
   if (!event) return null;
+
+  // for testing, in real we need to get from useAuth
+  const user = {
+    email: "test",
+    role: "participant",
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={event.title} size="lg">
@@ -60,10 +70,23 @@ export default function EventDetailsModal({
             )}
           </div>
         </div>
-        <div className="pt-2 flex justify-center">
-          <Button variant="primary" onClick={() => alert("Registering...")}>
-            Register
-          </Button>
+        <div className="pt-2 flex justify-center gap-6">
+          {user?.role === "participant" && event.status === "upcoming" && (
+            <Button variant="primary" onClick={() => alert("Registering...")}>
+              Register
+            </Button>
+          )}
+          {(user?.role === "organizer" || user?.role === "admin") && (
+            <>
+              <Button size="md" variant="secondary" onClick={onEdit}>
+                Edit
+              </Button>
+
+              <Button size="md" variant="danger" onClick={onDelete}>
+                Delete
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </Modal>
