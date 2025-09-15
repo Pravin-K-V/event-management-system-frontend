@@ -1,104 +1,131 @@
+import type { userRole } from "@/context/AuthContext";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import UserDropdown from "@/components/ui/UserDropdown";
-import {
-  ROLE_BASED_LINKS,
-  type NavLink as NavLinkType,
-} from "@/constants/navLinks";
-
-interface User {
-  name: string;
-  avatarUrl?: string;
-  role: "organizer" | "user";
-}
+import { Link, NavLink } from "react-router-dom";
+import Modal from "./Modal";
+import Button from "@/components/ui/Button";
+import { useAuth } from "@/hooks/useAuth";
 
 interface NavbarProps {
-  variant: "landing" | "app";
-  user?: User | null;
-  links?: NavLinkType;
+  role: userRole;
+  userName: string | undefined;
+  onLogout: () => void;
 }
 
+const navConfig: Record<userRole, { label: string; to: string }[]> = {
+  admin: [
+    { label: "Events", to: "/events" },
+    { label: "Users", to: "/users" },
+    { label: "Organizers", to: "/organizers" },
+  ],
+  organizer: [
+    { label: "My Events", to: "/my-events" },
+    { label: "Registrations", to: "/registrations" },
+  ],
+  participant: [
+    { label: "Explore Events", to: "/events" },
+    { label: "Registered Events", to: "/registered-events" },
+  ],
+};
+
+
 export default function Navbar({
-  variant = "landing",
-  user,
-  links,
+  role,
+  userName,
+  onLogout,
 }: NavbarProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const navLinksArray = Array.isArray(links)
-    ? links
-    : links
-      ? [links]
-      : user
-        ? ROLE_BASED_LINKS[user.role]
-        : [];
+  const [isOpen, setIsOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const initials = userName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
+
   return (
-    <nav className="bg-card shadow-md px-4 py-2">
-      <div className="container mx-auto flex justify-between items-center">
-        <NavLink to="/" className="text-primary font-bold text-xl">
-          Evently
-        </NavLink>
+    <>
+      <nav className="fixed top-0 right-0 left-0 h-16 backdrop-blur-md shadow-lg bg-card/80 z-50">
+        <div className="h-full px-8 flex items-center">
+          <Link to="/dashboard" className="text-primary font-bold text-2xl">
+            Evently
+          </Link>
 
-        {variant === "landing" && (
-          <div className="flex gap-2">
-            <NavLink
-              to="/login"
-              className="px-4 py-2 rounded bg-primary text-white hover:bg-primary-hover transition"
-            >
-              Login
-            </NavLink>
-            <NavLink
-              to="/signup"
-              className="px-4 py-2 rounded bg-secondary text-white hover:bg-secondary-hover transition"
-            >
-              Sign Up
-            </NavLink>
-          </div>
-        )}
-        {variant === "app" && user && (
-          <>
-            <ul className="hidden md:flex gap-4">
-              {navLinksArray.map((link) => (
-                <li key={link.path}>
-                  <NavLink
-                    to={link.path}
-                    className={({ isActive }) =>
-                      `text-text-primary hover:text-primary transition ${isActive ? "font-bold" : ""}`
-                    }
-                  >
-                    {link.label}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-
-            <div className="ml-4">
-              <UserDropdown user={user} />
-            </div>
-
-            <button
-              className="md:hidden ml-2"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              ☰
-            </button>
-          </>
-        )}
-      </div>
-      {variant === "app" && isMobileMenuOpen && (
-        <ul className="md:hidden mt-2 flex flex-col gap-2">
-          {navLinksArray.map((link) => (
-            <li key={link.path}>
+          <div className="ml-auto flex items-center space-x-6">
+            {navConfig[role].map((link) => (
               <NavLink
-                to={link.path}
-                className="block px-4 py-2 text-text-primary hover:bg-background rounded"
-                onClick={() => setIsMobileMenuOpen(false)}
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  `transition-colors ${isActive ? "text-primary" : "text-text-primary hover:text-primary"}`
+                }
+                viewTransition
               >
                 {link.label}
               </NavLink>
-            </li>
-          ))}
-        </ul>
-      )}
-    </nav>
+            ))}
+
+            <div className="relative">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="h-12 w-12 text-lg cursor-pointer transition flex items-center justify-center rounded-full text-white bg-primary font-bold overflow-hidden"
+              >
+                {initials}
+              </button>
+
+              {isOpen && (
+                <ul className="absolute right-0 mt-2 w-40 bg-card rounded-md shadow-lg overflow-hidden">
+                  <li>
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 text-text-primary hover:bg-background transition-colors"
+                      viewTransition
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      className="cursor-pointer w-full text-left px-4 py-2 text-text-primary hover:bg-background transition-colors"
+                      onClick={() => {
+                        onLogout();
+                        setIsOpen(false);
+                        setShowLogoutModal(true);
+                      }}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <Modal
+        isOpen={showLogoutModal}
+        title="Logout"
+        onClose={() => setShowLogoutModal(false)}
+      >
+        <p className="text-text-secondary mb-4">
+          Are you sure you want to logout?
+        </p>
+        <div className="flex justify-end gap-3">
+          <Button variant="secondary" onClick={() => setShowLogoutModal(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              onLogout();
+              setShowLogoutModal(false);
+              setIsOpen(false);
+            }}
+          >
+            Logout
+          </Button>
+        </div>
+      </Modal>
+    </>
   );
 }

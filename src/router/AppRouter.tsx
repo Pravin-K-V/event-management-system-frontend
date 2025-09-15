@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import EventListingPage from "@/pages/events/EventListingPage";
 import CreateEventPage from "@/features/events/pages/CreateEventPage";
 import EditEventPage from "@/features/events/pages/EditEventPage";
+import AppLayout from "@/layouts/AppLayout";
 
 function RootRouter() {
   const { user } = useAuth();
@@ -26,26 +27,6 @@ const router = createBrowserRouter([
     element: <RootRouter />,
   },
   {
-    path: "/dashboard",
-    element: <EventListingPage />,
-  },
-  {
-    path: "/events",
-    element: <EventListingPage />,
-  },
-  {
-    path: "/events/create",
-    element: <CreateEventPage />,
-  },
-  {
-    path: "/events/:id/edit",
-    element: <EditEventPage />,
-  },
-  {
-    path: "/playground",
-    element: <Playground />,
-  },
-  {
     path: "/login",
     element: <Login />,
   },
@@ -54,8 +35,33 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path: "*",
-    element: <div>Page not found</div>,
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <EventListingPage />,
+      },
+      {
+        path: "/events",
+        element: <EventListingPage />,
+      },
+      {
+        path: "/events/create",
+        element: <CreateEventPage />,
+      },
+      {
+        path: "/events/:id/edit",
+        element: <EditEventPage />,
+      },
+      {
+        path: "/playground",
+        element: <Playground />,
+      },
+      {
+        path: "*",
+        element: <div>Page not found</div>,
+      },
+    ],
   },
 ]);
 

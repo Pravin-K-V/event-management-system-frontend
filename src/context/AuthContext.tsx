@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-export type userRole = "admin" | "organizer" | "participant";
+export type userRole = "admin" | "organizer" | "participant" | undefined;
 
 export interface User {
   id: string;
