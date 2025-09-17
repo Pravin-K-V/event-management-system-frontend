@@ -8,7 +8,7 @@ export default function AppLayout() {
   return (
     <>
       <Navbar role={user?.role} userName={user?.fullName} onLogout={logout} />
-      <main className="p-4">
+      <main className="p-4 pt-16">
         <Outlet />
       </main>
     </>
