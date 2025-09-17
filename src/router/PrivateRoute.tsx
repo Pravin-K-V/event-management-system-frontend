@@ -3,9 +3,6 @@ import { Navigate, Outlet } from "react-router-dom";
 
 export default function PrivateRoute() {
   const { isLoggedIn } = useAuth();
-  if (!isLoggedIn) {
-    return <Navigate to="/" replace />;
-  }
-
+  if (!isLoggedIn) return <Navigate to="/login" replace />;
   return <Outlet />;
 }

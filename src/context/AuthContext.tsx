@@ -29,7 +29,10 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    const stored = localStorage.getItem("auth_user");
+    return stored ? JSON.parse(stored) : null;
+  });
 
   useEffect(() => {
     const savedUser = localStorage.getItem("auth_user");

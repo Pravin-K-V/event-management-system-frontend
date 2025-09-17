@@ -1,24 +1,27 @@
 import {
   createBrowserRouter,
-  Navigate,
   RouterProvider,
+  Navigate,
 } from "react-router-dom";
-import Playground from "@/pages/Playground";
 import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
-import GuestHome from "@/pages/Home/GuestHome";
-import { useAuth } from "@/hooks/useAuth";
 import EventListingPage from "@/pages/events/EventListingPage";
 import CreateEventPage from "@/features/events/pages/CreateEventPage";
 import EditEventPage from "@/features/events/pages/EditEventPage";
-import AppLayout from "@/layouts/AppLayout";
+import Playground from "@/pages/Playground";
+import PrivateRoute from "@/router/PrivateRoute";
+import { useAuth } from "@/hooks/useAuth";
+import GuestHome from "@/pages/Home/GuestHome";
+import RoleBasedRoute from "./RoleBasedRoute";
 
 function RootRouter() {
-  const { user } = useAuth();
+  const { isLoggedIn } = useAuth();
 
-  if (!user) return <GuestHome />;
-
-  return <Navigate to="/dashboard" replace />;
+  if (isLoggedIn) {
+    return <Navigate to="/dashboard" replace />;
+  } else {
+    return <GuestHome />;
+  }
 }
 
 const router = createBrowserRouter([
@@ -35,33 +38,22 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    element: <AppLayout />,
+    element: <PrivateRoute />,
     children: [
+      { path: "/dashboard", element: <EventListingPage /> },
       {
-        path: "/dashboard",
-        element: <EventListingPage />,
+        element: <RoleBasedRoute allowedRoles={["admin", "organizer"]} />,
+        children: [
+          { path: "/events/create", element: <CreateEventPage /> },
+          { path: "/events/:id/edit", element: <EditEventPage /> },
+        ],
       },
-      {
-        path: "/events",
-        element: <EventListingPage />,
-      },
-      {
-        path: "/events/create",
-        element: <CreateEventPage />,
-      },
-      {
-        path: "/events/:id/edit",
-        element: <EditEventPage />,
-      },
-      {
-        path: "/playground",
-        element: <Playground />,
-      },
-      {
-        path: "*",
-        element: <div>Page not found</div>,
-      },
+      { path: "/playground", element: <Playground /> },
     ],
+  },
+  {
+    path: "*",
+    element: <Navigate to="/" replace />,
   },
 ]);
 
