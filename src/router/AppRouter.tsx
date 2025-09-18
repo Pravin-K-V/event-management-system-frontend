@@ -2,7 +2,6 @@ import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
-  Outlet,
 } from "react-router-dom";
 import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
@@ -14,6 +13,7 @@ import PrivateRoute from "@/router/PrivateRoute";
 import { useAuth } from "@/hooks/useAuth";
 import GuestHome from "@/pages/Home/GuestHome";
 import RoleBasedRoute from "./RoleBasedRoute";
+import AppLayout from "@/layouts/AppLayout";
 
 function RootRouter() {
   const { isLoggedIn } = useAuth();
@@ -25,38 +25,27 @@ function RootRouter() {
   }
 }
 
-function GuestRoute() {
-  const { isLoggedIn } = useAuth();
-
-  if (isLoggedIn) {
-    return <Navigate to="/dashboard" />;
-  }
-
-  return <Outlet />;
-}
-
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootRouter />,
   },
   {
-    element: <GuestRoute />,
-    children: [
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/signup",
-        element: <Signup />,
-      },
-    ],
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
   },
   {
     element: <PrivateRoute />,
     children: [
-      { path: "/dashboard", element: <EventListingPage /> },
+      {
+        path: "/dashboard",
+        element: <AppLayout />,
+        children: [{ path: "", element: <EventListingPage /> }],
+      },
       {
         element: <RoleBasedRoute allowedRoles={["admin", "organizer"]} />,
         children: [
