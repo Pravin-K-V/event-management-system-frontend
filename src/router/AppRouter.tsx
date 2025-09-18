@@ -2,6 +2,7 @@ import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
+  Outlet,
 } from "react-router-dom";
 import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
@@ -24,18 +25,33 @@ function RootRouter() {
   }
 }
 
+function GuestRoute() {
+  const { isLoggedIn } = useAuth();
+
+  if (isLoggedIn) {
+    return <Navigate to="/dashboard" />;
+  }
+
+  return <Outlet />;
+}
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootRouter />,
   },
   {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
+    element: <GuestRoute />,
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Signup />,
+      },
+    ],
   },
   {
     element: <PrivateRoute />,
