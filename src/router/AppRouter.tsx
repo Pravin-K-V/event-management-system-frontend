@@ -15,6 +15,7 @@ import { useAuth } from "@/hooks/useAuth";
 import GuestHome from "@/pages/Home/GuestHome";
 import RoleBasedRoute from "./RoleBasedRoute";
 import AppLayout from "@/layouts/AppLayout";
+import NotFoundPage from "@/pages/NotFoundPage";
 
 function RootRouter() {
   const { isLoggedIn } = useAuth();
@@ -74,7 +75,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <Navigate to="/" replace />,
+    element: <NotFoundPage/>,
   },
 ]);
 
