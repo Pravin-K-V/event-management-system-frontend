@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 export default function Login() {
   const { login } = useAuth();
@@ -41,15 +42,14 @@ export default function Login() {
             name="email"
             required
           />
-          <Input
+          <PasswordInput
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            type="password"
             placeholder="Password"
             name="password"
             required
           />
-          
+
           {error && <p className="text-error">{error}</p>}
           <Button type="submit" className="w-full">
             Login

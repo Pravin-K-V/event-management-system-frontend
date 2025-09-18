@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState, type FormEvent } from "react";
 import type { userRole } from "@/context/AuthContext";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 export default function Signup() {
   const { signup } = useAuth();
@@ -67,17 +68,15 @@ export default function Signup() {
             onChange={(e) => setPhone(e.target.value)}
             required
           />
-          <Input
+          <PasswordInput
             value={password}
-            type="password"
             placeholder="Password"
             name="password"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Input
+          <PasswordInput
             value={confirmPassword}
-            type="password"
             placeholder="Confirm Password"
             name="confirmPassword"
             onChange={(e) => setConfirmPassword(e.target.value)}
