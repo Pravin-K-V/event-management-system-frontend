@@ -16,6 +16,7 @@ import GuestHome from "@/pages/Home/GuestHome";
 import RoleBasedRoute from "./RoleBasedRoute";
 import AppLayout from "@/layouts/AppLayout";
 import NotFoundPage from "@/pages/NotFoundPage";
+import ProfilePage from "@/pages/ProfilePage";
 
 function RootRouter() {
   const { isLoggedIn } = useAuth();
@@ -35,6 +36,21 @@ function GuestRoute() {
   }
 
   return <Outlet />;
+}
+
+function ProfilePageInformation() {
+  // const { user } = useAuth();
+  const storedUser = localStorage.getItem("auth_user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
+  return (
+    <ProfilePage
+      fullName={user?.fullName}
+      role={user?.role}
+      email={user?.email}
+      phone={user?.phone}
+    />
+  );
 }
 
 const router = createBrowserRouter([
@@ -70,12 +86,22 @@ const router = createBrowserRouter([
           { path: "/events/:id/edit", element: <EditEventPage /> },
         ],
       },
+      {
+        path: "/profile",
+        element: <AppLayout />,
+        children: [
+          {
+            path: "",
+            element: <ProfilePageInformation />,
+          },
+        ],
+      },
       { path: "/playground", element: <Playground /> },
     ],
   },
   {
     path: "*",
-    element: <NotFoundPage/>,
+    element: <NotFoundPage />,
   },
 ]);
 

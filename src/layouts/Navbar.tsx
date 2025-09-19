@@ -27,12 +27,7 @@ const navConfig: Record<userRole, { label: string; to: string }[]> = {
   ],
 };
 
-
-export default function Navbar({
-  role,
-  userName,
-  onLogout,
-}: NavbarProps) {
+export default function Navbar({ role, userName, onLogout }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
@@ -78,6 +73,7 @@ export default function Navbar({
                     <Link
                       to="/profile"
                       className="block px-4 py-2 text-text-primary hover:bg-background transition-colors"
+                      onClick={() => setIsOpen(false)}
                       viewTransition
                     >
                       Profile
@@ -87,7 +83,6 @@ export default function Navbar({
                     <button
                       className="cursor-pointer w-full text-left px-4 py-2 text-text-primary hover:bg-background transition-colors"
                       onClick={() => {
-                        onLogout();
                         setIsOpen(false);
                         setShowLogoutModal(true);
                       }}
