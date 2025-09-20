@@ -41,7 +41,7 @@ export default function Navbar({ role, userName, onLogout }: NavbarProps) {
     <>
       <nav className="fixed top-0 right-0 left-0 h-16 backdrop-blur-md shadow-lg bg-card/80 z-50">
         <div className="h-full px-8 flex items-center">
-          <Link to="/dashboard" className="text-primary font-bold text-2xl">
+          <Link to="/" className="text-primary font-bold text-2xl">
             Evently
           </Link>
 
