@@ -83,6 +83,7 @@ export default function EventListingPage() {
     if (search.trim() !== "") {
       temp = temp.filter(
         (e) =>
+          e.location.toLowerCase().includes(search.toLowerCase()) ||
           e.title.toLowerCase().includes(search.toLowerCase()) ||
           e.category.toLowerCase().includes(search.toLowerCase()),
       );
@@ -122,7 +123,11 @@ export default function EventListingPage() {
   return (
     <div className="p-6 space-y-6">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <SearchBar value={search} onChange={setSearch} />
+        <SearchBar
+          value={search}
+          placeholder="Search events by name, location or category"
+          onChange={setSearch}
+        />
         <div className="flex flex-wrap gap-4">
           <FilterBar
             status={status}

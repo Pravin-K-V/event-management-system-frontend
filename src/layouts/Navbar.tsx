@@ -14,7 +14,7 @@ interface NavbarProps {
 const navConfig: Record<userRole, { label: string; to: string }[]> = {
   admin: [
     { label: "Events", to: "/events" },
-    { label: "Users", to: "/users" },
+    { label: "Participants", to: "/participants" },
     { label: "Organizers", to: "/organizers" },
   ],
   organizer: [

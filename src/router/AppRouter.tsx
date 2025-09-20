@@ -17,12 +17,14 @@ import RoleBasedRoute from "./RoleBasedRoute";
 import AppLayout from "@/layouts/AppLayout";
 import NotFoundPage from "@/pages/NotFoundPage";
 import ProfilePage from "@/pages/ProfilePage";
+import UserTable from "@/components/users/UserTable";
+import { sampleOrganizers, sampleParticipants } from "@/pages/Admin/sampleData";
 
 function RootRouter() {
   const { isLoggedIn } = useAuth();
 
   if (isLoggedIn) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/events" replace />;
   } else {
     return <GuestHome />;
   }
@@ -32,7 +34,7 @@ function GuestRoute() {
   const { isLoggedIn } = useAuth();
 
   if (isLoggedIn) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/events" />;
   }
 
   return <Outlet />;
@@ -75,7 +77,7 @@ const router = createBrowserRouter([
     element: <PrivateRoute />,
     children: [
       {
-        path: "/dashboard",
+        path: "/events",
         element: <AppLayout />,
         children: [{ path: "", element: <EventListingPage /> }],
       },
@@ -97,6 +99,38 @@ const router = createBrowserRouter([
         ],
       },
       { path: "/playground", element: <Playground /> },
+      {
+        path: "/organizers",
+        element: <AppLayout />,
+        children: [
+          {
+            path: "",
+            element: (
+              <UserTable
+                users={sampleOrganizers}
+                onEdit={(user) => user}
+                onDelete={(user) => user}
+              />
+            ),
+          },
+        ],
+      },
+      {
+        path: "/participants",
+        element: <AppLayout />,
+        children: [
+          {
+            path: "",
+            element: (
+              <UserTable
+                users={sampleParticipants}
+                onEdit={(user) => user}
+                onDelete={(user) => user}
+              />
+            ),
+          },
+        ],
+      },
     ],
   },
   {
